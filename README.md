@@ -7,6 +7,8 @@
 ### Team Members:
 - Alisher Tokesh | SE-2217
 - Nurali Makhmutzhan | SE-2217
+- Alikhan Sagatbekov | SE-2217
+- Erkebulan Shaimardanov | SE-2217
 
 ## Getting Started
 
