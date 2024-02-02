@@ -5,15 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-<<<<<<< HEAD
 	"io/ioutil"
-	"log"
-	"net/http"
 	"os"
-=======
 	"log"
 	"net/http"
->>>>>>> ad1cf3a06435a8320297114d74023fd7f0685ca0
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -57,31 +52,28 @@ func main() {
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-<<<<<<< HEAD
+
 	// Чтение содержимого файла index.html
 	file, err := os.ReadFile("index.html")
-=======
 	tmpl, err := template.ParseFiles("index.html")
->>>>>>> ad1cf3a06435a8320297114d74023fd7f0685ca0
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-<<<<<<< HEAD
+
 	// Преобразование содержимого в строку
 	htmlContent := string(file)
 
 	// Создание шаблона из строки
-	tmpl, err := template.New("index").Parse(htmlContent)
+	tmpl, err = template.New("index").Parse(htmlContent)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
 	// Выполнение шаблона
-=======
->>>>>>> ad1cf3a06435a8320297114d74023fd7f0685ca0
+
 	err = tmpl.Execute(w, nil)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -91,7 +83,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-<<<<<<< HEAD
+
 		file, err := os.ReadFile("register.html")
 		if err != nil {
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -103,9 +95,8 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 
 		// Создание шаблона из строки
 		tmpl, err := template.New("register").Parse(htmlContent)
-=======
-		tmpl, err := template.ParseFiles("register.html")
->>>>>>> ad1cf3a06435a8320297114d74023fd7f0685ca0
+
+		tmpl, err = template.ParseFiles("register.html")
 		if err != nil {
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
@@ -144,7 +135,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-<<<<<<< HEAD
+
 	file, err := os.ReadFile("success.html")
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -156,13 +147,6 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Создание шаблона из строки
 	tmpl, err := template.New("success").Parse(htmlContent)
-=======
-	tmpl, err := template.ParseFiles("success.html")
->>>>>>> ad1cf3a06435a8320297114d74023fd7f0685ca0
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
 
 	err = tmpl.Execute(w, nil)
 	if err != nil {
@@ -171,10 +155,6 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ad1cf3a06435a8320297114d74023fd7f0685ca0
 func getUsersHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
@@ -206,7 +186,6 @@ func getUsersHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(jsonUsers)
 }
 
-<<<<<<< HEAD
 func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
@@ -305,53 +284,4 @@ func updateUserHandler(w http.ResponseWriter, r *http.Request) {
 	default:
 		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 	}
-=======
-func updateUserHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPut {
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	var user User
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
-
-	collection := client.Database("housing").Collection("users")
-	filter := bson.M{"_id": user.ID}
-	update := bson.M{"$set": bson.M{"name": user.Name, "email": user.Email, "password": user.Password, "updated_at": time.Now()}}
-
-	_, err := collection.UpdateOne(context.Background(), filter, update)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-}
-
-func deleteUserHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodDelete {
-		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	var user User
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
-
-	collection := client.Database("housing").Collection("users")
-	filter := bson.M{"_id": user.ID}
-
-	_, err := collection.DeleteOne(context.Background(), filter)
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
->>>>>>> ad1cf3a06435a8320297114d74023fd7f0685ca0
 }
