@@ -52,27 +52,19 @@ func main() {
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
-
-	// Чтение содержимого файла index.html
 	file, err := os.ReadFile("index.html")
-	tmpl, err := template.ParseFiles("index.html")
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
 
-
-	// Преобразование содержимого в строку
 	htmlContent := string(file)
 
-	// Создание шаблона из строки
-	tmpl, err = template.New("index").Parse(htmlContent)
+	tmpl, err := template.New("index").Parse(htmlContent)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
-
-	// Выполнение шаблона
 
 	err = tmpl.Execute(w, nil)
 	if err != nil {
@@ -80,6 +72,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
 
 func registerHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -96,7 +89,6 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		// Создание шаблона из строки
 		tmpl, err := template.New("register").Parse(htmlContent)
 
-		tmpl, err = template.ParseFiles("register.html")
 		if err != nil {
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
@@ -142,11 +134,11 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Преобразование содержимого в строку
-	htmlContent := string(file)
-
-	// Создание шаблона из строки
-	tmpl, err := template.New("success").Parse(htmlContent)
+	tmpl, err := template.New("success").Parse(string(file))
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
 
 	err = tmpl.Execute(w, nil)
 	if err != nil {
